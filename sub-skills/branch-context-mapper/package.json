@@ -1,0 +1,27 @@
+{
+  "name": "branch-context-mapper",
+  "version": "1.0.0",
+  "description": "Maps git branch types to changelog categories and version bumps",
+  "main": "scripts/branch-context-mapper.cjs",
+  "scripts": {
+    "test": "npm run test:jest && npm run test:bats",
+    "test:jest": "jest --coverage --coverage-threshold='{\"global\":{\"branches\":90,\"functions\":90,\"lines\":90,\"statements\":90}}'",
+    "test:bats": "bats tests",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [
+    "changelog",
+    "branch",
+    "semantic-versioning",
+    "git",
+    "automation"
+  ],
+  "author": "LightSpeed WP",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

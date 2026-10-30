@@ -1,0 +1,4 @@
+# BATS configuration for branch-context-mapper tests
+
+# Use verbose output
+--verbose

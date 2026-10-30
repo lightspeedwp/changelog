@@ -1,0 +1,27 @@
+{
+  "name": "changelog-validator",
+  "version": "1.0.0",
+  "description": "Validates changelog format and enforces governance rules",
+  "main": "scripts/validate-changelog.cjs",
+  "scripts": {
+    "test": "npm run test:jest && npm run test:bats",
+    "test:jest": "jest --coverage --coverage-threshold='{\"global\":{\"branches\":90,\"functions\":90,\"lines\":90,\"statements\":90}}'",
+    "test:bats": "bats tests",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [
+    "changelog",
+    "validation",
+    "governance",
+    "keep-a-changelog",
+    "quality-scoring"
+  ],
+  "author": "LightSpeed WP",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

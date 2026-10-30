@@ -1,0 +1,120 @@
+# Lefthook configuration for changelog automation
+# Reference: https://lefthook.dev/
+
+# Global settings
+fail: stage
+
+# Pre-commit hooks
+pre-commit:
+  parallel: true
+  commands:
+    branch-validate:
+      glob: "sub-skills/branch-context-mapper/**"
+      description: "Validate branch naming conventions"
+      run: |
+        if git rev-parse --verify HEAD >/dev/null 2>&1; then
+          branch=$(git rev-parse --abbrev-ref HEAD)
+          if [[ ! "$branch" =~ ^(feature|fix|docs|refactor|test|chore|security)/ ]] && [[ "$branch" != "main" ]] && [[ "$branch" != "master" ]] && [[ "$branch" != "develop" ]]; then
+            echo "❌ Invalid branch name: $branch"
+            echo "Must follow: type/description (feature/, fix/, docs/, refactor/, test/, chore/, security/)"
+            exit 1
+          fi
+          echo "✓ Branch naming valid: $branch"
+        fi
+
+    changelog-validate:
+      glob: "CHANGELOG.md"
+      description: "Validate changelog format"
+      run: |
+        if [ -f "CHANGELOG.md" ]; then
+          cd sub-skills/changelog-validator
+          npm run test:jest --silent 2>/dev/null
+          if [ $? -eq 0 ]; then
+            echo "✓ Changelog format valid"
+          else
+            echo "❌ Changelog format issues - please review"
+            exit 1
+          fi
+        fi
+
+    jest-coverage:
+      glob: "sub-skills/**/__tests__/**/*.test.js"
+      description: "Run Jest tests with coverage check"
+      run: |
+        echo "Running Jest tests (90%+ coverage required)..."
+        cd sub-skills/branch-context-mapper && npm run test:jest --silent
+        if [ $? -ne 0 ]; then
+          echo "❌ branch-context-mapper tests failed"
+          exit 1
+        fi
+        
+        cd ../changelog-validator && npm run test:jest --silent
+        if [ $? -ne 0 ]; then
+          echo "❌ changelog-validator tests failed"
+          exit 1
+        fi
+        echo "✓ All Jest tests passed with 90%+ coverage"
+
+    bats-tests:
+      glob: "sub-skills/**/tests/**/*.bats"
+      description: "Run BATS integration tests"
+      run: |
+        echo "Running BATS shell tests (100% pass rate required)..."
+        cd sub-skills/branch-context-mapper && npm run test:bats
+        if [ $? -ne 0 ]; then
+          echo "❌ branch-context-mapper BATS failed"
+          exit 1
+        fi
+        
+        cd ../changelog-validator && npm run test:bats
+        if [ $? -ne 0 ]; then
+          echo "❌ changelog-validator BATS failed"
+          exit 1
+        fi
+        echo "✓ All BATS tests passed"
+
+# Commit message validation
+commit-msg:
+  commands:
+    commit-format:
+      description: "Validate commit message format"
+      run: |
+        commit_msg=$(cat "$1")
+        if [[ ! "$commit_msg" =~ ^[a-z]+(\([a-z-]+\))?:.* ]] && [[ ! "$commit_msg" =~ ^Merge ]]; then
+          echo "❌ Commit message must follow format: type(scope): message"
+          echo "Examples:"
+          echo "  - feat(branch-mapper): add breaking change detection"
+          echo "  - fix(validator): resolve governance rule check"
+          echo "  - docs: update architecture guide"
+          echo "  - test(coverage): add edge case tests"
+          exit 1
+        fi
+        echo "✓ Commit message format valid"
+
+# Pre-push validation
+pre-push:
+  parallel: false
+  commands:
+    final-validation:
+      description: "Final validation before push"
+      run: |
+        echo "Running final validation before push..."
+        
+        # Check all tests pass
+        cd sub-skills/branch-context-mapper
+        npm test --silent || exit 1
+        
+        cd ../changelog-validator
+        npm test --silent || exit 1
+        
+        echo "✓ All tests passed - ready to push"
+        echo "✓ Push will proceed"
+
+# Installation
+# Run: lefthook install
+
+# Testing hooks
+# Run: lefthook run pre-commit --all-files
+
+# Documentation
+# See: docs/HOOKS_GUIDE.md

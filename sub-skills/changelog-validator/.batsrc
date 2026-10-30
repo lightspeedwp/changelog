@@ -1,0 +1,4 @@
+# BATS configuration for changelog-validator tests
+
+# Use verbose output
+--verbose
