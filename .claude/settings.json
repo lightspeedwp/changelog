@@ -1,0 +1,132 @@
+{
+  "projectName": "changelog",
+  "description": "Production-ready changelog automation system for WordPress block themes and plugins with governance validation and release management",
+  "version": "1.0.0",
+  "settings": {
+    "model": "claude-opus-5-5",
+    "effort": "medium",
+    "outputStyle": "concise",
+    "fastMode": false
+  },
+  "permissions": {
+    "allow": [
+      "npm test",
+      "npm run lint",
+      "npm run test:jest",
+      "npm run test:bats",
+      "grep",
+      "find",
+      "git status",
+      "git log",
+      "git diff"
+    ]
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    ".git/",
+    "dist/",
+    "coverage/",
+    ".DS_Store",
+    "*.swp",
+    ".turbo/",
+    "*.local.json"
+  ],
+  "aliases": {
+    "test": "npm test",
+    "test:jest": "npm run test:jest",
+    "test:bats": "npm run test:bats",
+    "test:watch": "npm run test:watch",
+    "test:coverage": "npm run test:jest -- --coverage",
+    "lint": "npm run lint",
+    "validate": "npm run lint && npm test",
+    "check": "npm run validate",
+    "help": "less README.md"
+  },
+  "testing": {
+    "framework": "Jest + BATS",
+    "testMatch": [
+      "sub-skills/*/__tests__/**/*.test.js",
+      "sub-skills/*/tests/**/*.bats"
+    ],
+    "testEnvironment": "node",
+    "testTimeout": 120000,
+    "coverage": true,
+    "coverageThreshold": {
+      "lines": 90,
+      "functions": 90,
+      "branches": 90,
+      "statements": 90
+    },
+    "bashCompatibility": "3.2+",
+    "commands": {
+      "test": "npm test -- with coverage",
+      "testJest": "npm run test:jest -- runs Jest tests",
+      "testBats": "npm run test:bats -- runs BATS integration tests",
+      "testWatch": "npm run test:watch -- continuous testing",
+      "testVerbose": "npm run test:verbose -- detailed output",
+      "testSingle": "npm test -- <filename>.test.js"
+    },
+    "coLocation": {
+      "description": "Jest tests are co-located with source scripts following Jest best practices",
+      "locations": [
+        "sub-skills/branch-context-mapper/__tests__/",
+        "sub-skills/changelog-validator/__tests__/"
+      ],
+      "pattern": "Tests placed alongside shell scripts in __tests__ folder"
+    },
+    "integration": {
+      "framework": "BATS",
+      "locations": [
+        "sub-skills/branch-context-mapper/tests/",
+        "sub-skills/changelog-validator/tests/"
+      ],
+      "description": "End-to-end shell script integration testing",
+      "requirements": {
+        "install": "brew install bats-core (macOS) or sudo apt-get install bats (Linux)"
+      }
+    }
+  },
+  "skills": [
+    "branch-context-mapper",
+    "changelog-validator"
+  ],
+  "subSkills": {
+    "branch-context-mapper": {
+      "path": "sub-skills/branch-context-mapper",
+      "description": "Analyze git branch names and determine changelog categories, semantic version bumps, and breaking changes"
+    },
+    "changelog-validator": {
+      "path": "sub-skills/changelog-validator",
+      "description": "Validate CHANGELOG.md format, enforce governance rules, and score quality for WordPress block themes and plugins"
+    }
+  },
+  "documentation": {
+    "main": "README.md",
+    "onboarding": "docs/TEAM_ONBOARDING.md",
+    "roadmap": "docs/PHASE_2_ROADMAP.md",
+    "standards": "docs/ORG_STANDARDS.md",
+    "constitution": ".specify/memory/constitution.md",
+    "mapper": "sub-skills/branch-context-mapper/SKILL.md",
+    "validator": "sub-skills/changelog-validator/SKILL.md",
+    "claude": "CLAUDE.md",
+    "agents": "AGENTS.md",
+    "changelog": "CHANGELOG.md",
+    "contributing": "README.md#contributing"
+  },
+  "gitHooks": {
+    "engine": "lefthook",
+    "config": "lefthook.yaml",
+    "hooks": {
+      "pre-commit": "Branch naming validation, changelog format check, Jest tests (90%+ coverage), BATS tests (100% pass)",
+      "commit-msg": "Branch-based commit format validation",
+      "pre-push": "Final validation before push"
+    }
+  },
+  "spec-kit": {
+    "installed": true,
+    "version": "1.2.5",
+    "integration": "Claude Code manual mode",
+    "location": ".specify/",
+    "constitution": ".specify/memory/constitution.md"
+  }
+}

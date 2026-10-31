@@ -1,0 +1,200 @@
+{
+  "version": "1.0",
+  "agents": [
+    {
+      "id": "branch-context-mapper",
+      "name": "Branch Context Mapper",
+      "description": "Analyzes git branch names and determines changelog categories, semantic version bumps, and breaking changes for WordPress block themes and plugins",
+      "type": "skill",
+      "path": "sub-skills/branch-context-mapper/",
+      "main": "SKILL.md",
+      "capabilities": [
+        "branch-analysis",
+        "changelog-mapping",
+        "version-bump-calculation",
+        "breaking-change-detection",
+        "naming-validation"
+      ],
+      "tools": [
+        {
+          "name": "branch-context-mapper.cjs",
+          "description": "Core branch analysis and mapping implementation",
+          "path": "sub-skills/branch-context-mapper/scripts/branch-context-mapper.cjs"
+        }
+      ],
+      "testing": {
+        "jest": "sub-skills/branch-context-mapper/__tests__/",
+        "bats": "sub-skills/branch-context-mapper/tests/"
+      }
+    },
+    {
+      "id": "changelog-validator",
+      "name": "Changelog Validator",
+      "description": "Validates CHANGELOG.md format, enforces 6 governance rules, calculates quality scores (0-100), and determines release readiness for WordPress projects",
+      "type": "skill",
+      "path": "sub-skills/changelog-validator/",
+      "main": "SKILL.md",
+      "capabilities": [
+        "format-validation",
+        "governance-enforcement",
+        "quality-scoring",
+        "release-readiness",
+        "error-reporting"
+      ],
+      "tools": [
+        {
+          "name": "validate-changelog.cjs",
+          "description": "Core changelog validation and governance enforcement",
+          "path": "sub-skills/changelog-validator/scripts/validate-changelog.cjs"
+        }
+      ],
+      "testing": {
+        "jest": "sub-skills/changelog-validator/__tests__/",
+        "bats": "sub-skills/changelog-validator/tests/"
+      }
+    }
+  ],
+  "relatedSkills": [
+    {
+      "name": "release",
+      "description": "Release management and versioning",
+      "usage": "Before release: use to validate readiness and cut release"
+    },
+    {
+      "name": "linting",
+      "description": "Code quality and linting validation",
+      "usage": "During development: use to enforce code standards"
+    },
+    {
+      "name": "test",
+      "description": "Testing strategy and test execution",
+      "usage": "During development: use for test planning and execution"
+    },
+    {
+      "name": "pr-review-workflow",
+      "description": "Pull request review and validation",
+      "usage": "Before merge: use to validate PR quality and changelog"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Feature Development",
+      "description": "Standard workflow for developing a new feature with proper changelog entry",
+      "steps": [
+        "Create feature/ branch with proper naming convention",
+        "Branch-context-mapper validates branch name and maps to changelog category",
+        "Develop feature with tests (TDD: red → green → refactor)",
+        "Run npm test to verify 90%+ coverage",
+        "Add changelog entry in [Unreleased] section",
+        "Changelog-validator scores quality (target: 90+)",
+        "Commit with validated message (lefthook validates)",
+        "Open PR with auto-routed template",
+        "Merge when changelog validates and tests pass"
+      ]
+    },
+    {
+      "name": "Bug Fix Workflow",
+      "description": "Process for fixing bugs with proper traceability",
+      "steps": [
+        "Create fix/ branch following conventions",
+        "Branch-context-mapper validates and maps to Fixed category",
+        "Write failing test reproducing the bug",
+        "Implement fix until test passes",
+        "Run full test suite (90%+ coverage required)",
+        "Add changelog entry explaining what was fixed",
+        "Changelog-validator confirms quality (90+)",
+        "Commit and push with validated message",
+        "Open PR; merge when all checks pass"
+      ]
+    },
+    {
+      "name": "Security Fix Workflow",
+      "description": "Expedited process for security vulnerabilities",
+      "steps": [
+        "Create security/ branch with vulnerability details",
+        "Branch-context-mapper validates and maps to Security category",
+        "Implement fix with test coverage",
+        "Add changelog entry: 'Fixed [VULNERABILITY] that allowed [IMPACT]'",
+        "Changelog-validator ensures clarity and completeness",
+        "Commit with security context in message",
+        "Open PR requesting immediate review",
+        "Fast-track merge when security team approves"
+      ]
+    },
+    {
+      "name": "Release Preparation",
+      "description": "Validate changelog and prepare for semantic version release",
+      "steps": [
+        "Verify [Unreleased] section contains all changes",
+        "Run changelog-validator with --release-version flag",
+        "Validate quality scores (all entries 90+)",
+        "Verify governance compliance (immutability, atomicity, etc.)",
+        "Move entries to version section (e.g., [1.2.0] - 2026-10-31)",
+        "Create release PR with updated CHANGELOG.md",
+        "Merge release PR and create git tag",
+        "Generate release notes from validated changelog"
+      ]
+    },
+    {
+      "name": "Complete CI/CD Pipeline",
+      "description": "Full automation from branch to release with governance gates",
+      "steps": [
+        "Developer pushes to feature/ branch",
+        "Pre-commit hook: branch validation, tests, changelog check",
+        "CI runs: Jest (90%+), BATS (100%), linting",
+        "PR created with routed template based on branch type",
+        "Changelog-validator runs and scores all entries",
+        "CI gates: must pass 90%+ coverage + quality scoring",
+        "Team review: changelog quality, code quality, governance",
+        "Merge: all gates passed, changelog ready",
+        "Release: changelog validated, semantic version bumped, tagged"
+      ]
+    }
+  ],
+  "governance": {
+    "constitution": ".specify/memory/constitution.md",
+    "orgStandards": "docs/ORG_STANDARDS.md",
+    "phases": {
+      "phase1": {
+        "status": "complete",
+        "description": "6 core governance rules, 7 branch types, Lefthook integration",
+        "date": "2026-10-31"
+      },
+      "phase2": {
+        "status": "planned",
+        "description": "All 24 branch types, all 20 rules, YAML field validation, PR template routing",
+        "timeline": "8-12 weeks"
+      },
+      "phase3": {
+        "status": "future",
+        "description": "GitHub Actions automation, team rollout, continuous improvement"
+      }
+    }
+  },
+  "qualityGates": [
+    {
+      "name": "Test Coverage",
+      "description": "90%+ coverage (lines, functions, branches, statements)",
+      "threshold": 90,
+      "blocking": true
+    },
+    {
+      "name": "BATS Pass Rate",
+      "description": "100% of BATS integration tests must pass",
+      "threshold": 100,
+      "blocking": true
+    },
+    {
+      "name": "Changelog Quality Score",
+      "description": "All entries must score 90+ on quality scale",
+      "threshold": 90,
+      "blocking": true
+    },
+    {
+      "name": "Governance Compliance",
+      "description": "6 governance rules: immutability, atomicity, consistency, completeness, clarity, traceability",
+      "threshold": 100,
+      "blocking": true
+    }
+  ]
+}
