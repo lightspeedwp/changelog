@@ -7,7 +7,6 @@
  */
 
 const fs = require('fs');
-const path = require('path');
 
 function validateChangelog(filePath) {
   try {
@@ -73,7 +72,7 @@ function validateChangelog(filePath) {
 if (require.main === module) {
   const filePath = process.argv[2] || 'CHANGELOG.md';
   const result = validateChangelog(filePath);
-  
+
   if (process.argv.includes('--json')) {
     console.log(JSON.stringify(result, null, 2));
   } else {
@@ -83,7 +82,7 @@ if (require.main === module) {
       console.log('Errors:', result.errors);
     }
   }
-  
+
   process.exit(result.isValid ? 0 : 1);
 }
 

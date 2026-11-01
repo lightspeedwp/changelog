@@ -1,7 +1,6 @@
 const { validateChangelog } = require('../scripts/validate-changelog.cjs');
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
 
 describe('Changelog Validator', () => {
   const testDir = path.join(__dirname, 'fixtures');
@@ -113,7 +112,9 @@ describe('Changelog Validator', () => {
 
       // Temporarily make file unreadable
       const originalRead = fs.readFileSync;
-      fs.readFileSync = () => { throw new Error('Permission denied'); };
+      fs.readFileSync = () => {
+        throw new Error('Permission denied');
+      };
 
       const result = validateChangelog(testFile);
       expect(result.isValid).toBe(false);

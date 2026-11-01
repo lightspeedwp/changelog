@@ -89,13 +89,13 @@ Validate changelog format, enforce 6 governance rules, calculate quality scores,
 
 Each changelog receives scores:
 
-| Level | Score | Status | Action |
-|-------|-------|--------|--------|
-| Excellent | 90-100 | Ready for release | Merge immediately |
-| Good | 85-89 | Ready with notes | Review suggestions |
-| Fair | 80-84 | Address issues | Fix before merge |
-| Poor | 70-79 | Significant issues | Major work needed |
-| Unacceptable | <70 | Cannot merge | Rewrite required |
+| Level        | Score  | Status             | Action             |
+| ------------ | ------ | ------------------ | ------------------ |
+| Excellent    | 90-100 | Ready for release  | Merge immediately  |
+| Good         | 85-89  | Ready with notes   | Review suggestions |
+| Fair         | 80-84  | Address issues     | Fix before merge   |
+| Poor         | 70-79  | Significant issues | Major work needed  |
+| Unacceptable | <70    | Cannot merge       | Rewrite required   |
 
 ## Running Tests
 
@@ -139,6 +139,7 @@ node scripts/validate-changelog.cjs CHANGELOG.md --json
 ```
 
 **Output:**
+
 ```json
 {
   "valid": true,
@@ -166,6 +167,7 @@ node scripts/validate-changelog.cjs CHANGELOG.md --json
 ```
 
 **Output:**
+
 ```json
 {
   "valid": false,
@@ -217,6 +219,7 @@ node scripts/validate-changelog.cjs CHANGELOG.md --release-version 2.0.0 --json
 ```
 
 **Output:**
+
 ```json
 {
   "valid": true,

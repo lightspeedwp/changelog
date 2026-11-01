@@ -3,9 +3,11 @@
 **Task:** Extract and analyze git branch metadata
 
 ## Input
+
 - Branch name (e.g., `feature/oauth-authentication`)
 
 ## Output
+
 - Branch type (feature/fix/docs/etc)
 - Description
 - Changelog category
@@ -17,6 +19,7 @@
 Input: `feature/oauth-authentication`
 
 Output:
+
 ```json
 {
   "branchType": "feature",
@@ -28,6 +31,7 @@ Output:
 ```
 
 ## Success Criteria
+
 - Branch type correctly identified
 - Category correctly mapped
 - Version bump correctly calculated

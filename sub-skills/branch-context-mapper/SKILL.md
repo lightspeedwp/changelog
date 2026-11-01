@@ -39,16 +39,16 @@ Extract branch metadata from git branch names and map to changelog categories, v
 
 ## Branch Type Reference
 
-| Branch Type | Category | Version Bump | Changelog | Use Case |
-|------------|----------|--------------|-----------|----------|
-| `feature/` | Added | MINOR | ✅ Yes | New features or functionality |
-| `fix/` | Fixed | PATCH | ✅ Yes | Bug fixes and corrections |
-| `security/` | Security | PATCH* | ✅ Yes | Security vulnerabilities |
-| `docs/` | (none) | (none) | ❌ No | Documentation updates |
-| `refactor/` | (none) | (none) | ❌ No | Code refactoring (no functionality change) |
-| `test/` | (none) | (none) | ❌ No | Test additions/updates |
-| `chore/` | (none) | PATCH | ⚠️ Optional | Dependency updates, tooling |
-| `breaking:` | Changed | **MAJOR** | ✅ Yes | Breaking API/behavior changes |
+| Branch Type | Category | Version Bump | Changelog   | Use Case                                   |
+| ----------- | -------- | ------------ | ----------- | ------------------------------------------ |
+| `feature/`  | Added    | MINOR        | ✅ Yes      | New features or functionality              |
+| `fix/`      | Fixed    | PATCH        | ✅ Yes      | Bug fixes and corrections                  |
+| `security/` | Security | PATCH*       | ✅ Yes      | Security vulnerabilities                   |
+| `docs/`     | (none)   | (none)       | ❌ No       | Documentation updates                      |
+| `refactor/` | (none)   | (none)       | ❌ No       | Code refactoring (no functionality change) |
+| `test/`     | (none)   | (none)       | ❌ No       | Test additions/updates                     |
+| `chore/`    | (none)   | PATCH        | ⚠️ Optional | Dependency updates, tooling                |
+| `breaking:` | Changed  | **MAJOR**    | ✅ Yes      | Breaking API/behavior changes              |
 
 *Security issues can trigger MAJOR if breaking changes are involved
 
@@ -57,6 +57,7 @@ Extract branch metadata from git branch names and map to changelog categories, v
 The skill provides clear, actionable error messages when validation fails:
 
 **Invalid branch name:**
+
 ```
 Error: Branch name does not match LightSpeed WP conventions
 Expected format: <type>/<description> or <type>(<scope>)/<description>
@@ -68,6 +69,7 @@ Example: breaking:api-v2-migration
 ```
 
 **Ambiguous breaking changes:**
+
 ```
 Warning: Branch contains 'breaking' but no explicit marker detected
 Include in commit message: BREAKING CHANGE: <description>
@@ -75,6 +77,7 @@ Or rename branch to: breaking:feature-name
 ```
 
 **Version bump conflicts:**
+
 ```
 Warning: Security branch with breaking changes detected
 Recommending MAJOR version bump instead of PATCH
@@ -84,18 +87,21 @@ Reason: Breaking changes require MAJOR version regardless of branch type
 ## Core Functions
 
 **Analyze Branch Name**
+
 - Extract branch type (feature, fix, security, docs, refactor, test, chore, breaking)
 - Parse scope (optional, e.g., `feature(blocks)/gallery-lightbox`)
 - Validate naming conventions against LightSpeed WP standards
 - Return structured metadata with category and version impact
 
 **Detect Breaking Changes**
+
 - Scan for explicit markers: `breaking:` prefix, `BREAKING CHANGE:` in commits
 - Validate breaking change description is present and clear
 - Override version to MAJOR when breaking detected
 - Provide detailed breaking change description
 
 **Map to Changelog**
+
 - Determine changelog category from branch type (Added, Fixed, Security, Changed)
 - Calculate semantic version bump impact (MAJOR, MINOR, PATCH, none)
 - Generate entry template with proper formatting
@@ -106,6 +112,7 @@ Reason: Breaking changes require MAJOR version regardless of branch type
 ### WordPress Block Theme: Feature Branch
 
 **Branch:** `feature/hero-block-parallax`
+
 ```json
 {
   "valid": true,
@@ -122,6 +129,7 @@ Reason: Breaking changes require MAJOR version regardless of branch type
 ### WooCommerce Plugin: Security Fix
 
 **Branch:** `security/checkout-form-xss`
+
 ```json
 {
   "valid": true,
@@ -138,6 +146,7 @@ Reason: Breaking changes require MAJOR version regardless of branch type
 ### Block Plugin: Breaking Change
 
 **Branch:** `breaking:block-registration-api-v2`
+
 ```json
 {
   "valid": true,

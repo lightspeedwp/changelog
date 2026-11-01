@@ -4,10 +4,15 @@
   "description": "Validates changelog format and enforces governance rules",
   "main": "scripts/validate-changelog.cjs",
   "scripts": {
-    "test": "npm run test:jest && npm run test:bats",
+    "test": "npm run lint && npm run test:jest && npm run test:bats",
     "test:jest": "jest --coverage --coverage-threshold='{\"global\":{\"branches\":90,\"functions\":90,\"lines\":90,\"statements\":90}}'",
     "test:bats": "bats tests",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "lint": "npm run lint:js && npm run format:check",
+    "lint:js": "eslint . --ext .js,.cjs",
+    "lint:fix": "npm run lint:js -- --fix && npm run format",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "changelog",
@@ -19,7 +24,9 @@
   "author": "LightSpeed WP",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "eslint": "^8.53.0",
+    "prettier": "^3.1.0"
   },
   "engines": {
     "node": ">=18.0.0"

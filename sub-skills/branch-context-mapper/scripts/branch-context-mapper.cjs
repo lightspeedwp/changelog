@@ -6,9 +6,6 @@
  * Implementation Phase 1
  */
 
-const fs = require('fs');
-const path = require('path');
-
 // Branch type mapping
 const BRANCH_TYPES = {
   feature: { category: 'Added', versionBump: 'MINOR' },
@@ -52,7 +49,9 @@ function analyzeBranch(branchName) {
     return {
       branchType,
       isValid: false,
-      validationErrors: [`Unknown branch type: '${branchType}'. Valid types: ${Object.keys(BRANCH_TYPES).join(', ')}`],
+      validationErrors: [
+        `Unknown branch type: '${branchType}'. Valid types: ${Object.keys(BRANCH_TYPES).join(', ')}`
+      ],
       description,
       category: null,
       versionBump: null,
