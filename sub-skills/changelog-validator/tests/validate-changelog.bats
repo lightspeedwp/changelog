@@ -19,8 +19,8 @@ setup() {
 ### Fixed
 - Bug fix (#124)
 CONTENT
-  result=$(node "$SCRIPT_PATH" "$TEST_DIR/valid.md")
-  [[ "$result" == *"true"* ]]
+  result=$(node "$SCRIPT_PATH" "$TEST_DIR/valid.md" --json)
+  [[ "$result" == *'"isValid": true'* ]]
 }
 
 @test "should reject missing title" {
