@@ -1,0 +1,10 @@
+# BATS configuration for changelog skill tests
+
+# Use TAP formatter for CI
+# --formatter tap
+
+# Parallel execution
+# --parallel
+
+# Verbose output
+--verbose
