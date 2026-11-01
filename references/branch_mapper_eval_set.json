@@ -1,0 +1,82 @@
+[
+  {
+    "query": "I just created a branch called feature/oauth-authentication and I'm not sure what changelog category this maps to or what version bump it would need. Can you analyze it?",
+    "should_trigger": true
+  },
+  {
+    "query": "We're preparing a release and need to figure out the semantic version bump. I have branches like feat/dashboard-redesign, fix/checkout-validation, and breaking:api-v2. What's the version impact?",
+    "should_trigger": true
+  },
+  {
+    "query": "I fixed an XSS vulnerability on security/xss-form-injection and I need to know if this should be a MAJOR version bump or just PATCH",
+    "should_trigger": true
+  },
+  {
+    "query": "Which changelog section should a docs/ branch entry go into? I updated the README with API documentation",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm reviewing a PR from a contributor whose branch is named 'breaking:block-registration-api-refactor'. How should I respond to ensure proper documentation?",
+    "should_trigger": true
+  },
+  {
+    "query": "Can you validate that my branch name follows LightSpeed WP conventions? It's feature/hero-block-parallax",
+    "should_trigger": true
+  },
+  {
+    "query": "I have commits on main that need to be analyzed for branch type and changelog mapping. The commit messages mention feature, fix, and security changes",
+    "should_trigger": true
+  },
+  {
+    "query": "What's the difference between a feature/ branch and a breaking: branch in terms of version bumping? I'm confused about when to use each",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to generate changelog entries for branches: fix/checkout-xss, feat/payment-retry, perf/caching-optimization. What categories should each go in?",
+    "should_trigger": true
+  },
+  {
+    "query": "My branch is refactor/database-schema-cleanup. According to changelog conventions, should this appear in the CHANGELOG at all?",
+    "should_trigger": true
+  },
+  {
+    "query": "Read this file and extract all the data in JSON format",
+    "should_trigger": false
+  },
+  {
+    "query": "Can you write me a blog post about our new release?",
+    "should_trigger": false
+  },
+  {
+    "query": "I need to refactor this React component for performance",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I configure CI/CD for my repository?",
+    "should_trigger": false
+  },
+  {
+    "query": "I need to merge my branch but I'm getting merge conflicts. How should I resolve them?",
+    "should_trigger": false
+  },
+  {
+    "query": "What's the best way to write unit tests for WordPress plugins?",
+    "should_trigger": false
+  },
+  {
+    "query": "I have security/ branch with emergency hotfix. Is this PATCH or MAJOR version? Context: we're fixing a critical authentication bypass",
+    "should_trigger": true
+  },
+  {
+    "query": "Branch naming validation: I want to use 'feature_oauth_support' but I'm not sure if underscores are allowed",
+    "should_trigger": true
+  },
+  {
+    "query": "My team uses different branch naming conventions. Can you tell me if 'bugfix/form-validation' or 'fix/form-validation' is correct for LightSpeed standards?",
+    "should_trigger": true
+  },
+  {
+    "query": "I'm building a GitHub Action to automate changelog creation. I need to map branch types to changelog categories dynamically",
+    "should_trigger": true
+  }
+]

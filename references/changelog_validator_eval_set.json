@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Can you validate our CHANGELOG.md? It's in the root and I want to make sure it's production-ready before we ship v1.2.0",
+    "should_trigger": true
+  },
+  {
+    "query": "I added a changelog entry but it's vague. 'Fixed stuff' is all I wrote. Will this pass governance validation?",
+    "should_trigger": true
+  },
+  {
+    "query": "Our WordPress plugin is ready for release. Before I tag v2.0.0, I need to verify the CHANGELOG meets all quality standards",
+    "should_trigger": true
+  },
+  {
+    "query": "Can you score the quality of these changelog entries? Some are user-focused but I'm not sure they meet the clarity threshold",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to check if we're ready to release. The [Unreleased] section still has entries — is this a blocker?",
+    "should_trigger": true
+  },
+  {
+    "query": "What does Keep a Changelog 1.1.0 compliance mean? I want to make sure our CHANGELOG.md follows the standard",
+    "should_trigger": true
+  },
+  {
+    "query": "Multiple team members added changelog entries. I need to validate that each entry references exactly one PR/issue and follows format rules",
+    "should_trigger": true
+  },
+  {
+    "query": "One of our entries says 'Added OAuth support ([#42](link), [#89](link))' — is this atomic or does it violate changelog governance?",
+    "should_trigger": true
+  },
+  {
+    "query": "Before merging this PR, I need to validate the changelog entry quality. It should score 90+ to pass our gate",
+    "should_trigger": true
+  },
+  {
+    "query": "We have entries with emojis and marketing language. Will these fail governance validation? What should I fix?",
+    "should_trigger": true
+  },
+  {
+    "query": "Can you rewrite this WordPress plugin for better performance?",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I deploy this to production?",
+    "should_trigger": false
+  },
+  {
+    "query": "What's the best git workflow for my team?",
+    "should_trigger": false
+  },
+  {
+    "query": "I need help writing unit tests for my code",
+    "should_trigger": false
+  },
+  {
+    "query": "Can you explain semantic versioning to me?",
+    "should_trigger": false
+  },
+  {
+    "query": "I have a merge conflict in CHANGELOG.md. How do I resolve it?",
+    "should_trigger": false
+  },
+  {
+    "query": "Our changelog has an entry 'Fixed checkout form validation ([#123](link))' but it just says 'validation' with no context. The entry was marked as [Unreleased]. Is this governance-compliant and will it score 90+?",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to audit our changelog across all versions for governance compliance. Are there any entries that violate immutability or atomicity rules?",
+    "should_trigger": true
+  },
+  {
+    "query": "Before the release manager tags v1.5.0, they want my sign-off that the changelog is [Unreleased]-clean and ready. Can you do a full compliance check?",
+    "should_trigger": true
+  },
+  {
+    "query": "Our CI pipeline integrates changelog validation. For each PR, we need to score the changelog quality and block if below 90. Can you explain the scoring factors?",
+    "should_trigger": true
+  }
+]
