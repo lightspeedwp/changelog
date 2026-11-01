@@ -1,300 +1,91 @@
-# LightSpeed WP Changelog Automation
+# LightSpeed WP Changelog
 
-**Production-ready changelog automation system for WordPress block themes and plugins**
+A Claude Code skill for creating and reviewing WordPress project changelogs, with bundled sub-skills for branch context and changelog validation. The root [SKILL.md](SKILL.md) is the entrypoint.
 
-Enforce consistent, high-quality changelogs across LightSpeed WP projects through automated branch validation, changelog entry validation, and governance rule enforcement. Fully aligned with org-wide branching strategy and changelog standards.
+## Install and invoke
 
-**Status:** ✅ Phase 1 Complete | 🔧 Phase 2 In Planning | 📋 Spec-Kit Integrated
-
----
-
-## 📖 Documentation Guide
-
-**New to this project?** Start here:
-- 🚀 [Team Onboarding](docs/TEAM_ONBOARDING.md) — Setup, concepts, and workflows
-- 📊 [Phase 2 Roadmap](docs/PHASE_2_ROADMAP.md) — Implementation plan and timeline
-
-**Managing this project?** Read these:
-- 🏛️ [CLAUDE.md](CLAUDE.md) — Project instructions and principles
-- 🤖 [AGENTS.md](AGENTS.md) — Agent definitions and automation
-- ⚙️ Spec-Kit Constitution (via `/speckit-constitution` skill)
-
-**Deep dives:**
-- 🔀 [Branch Context Mapper](sub-skills/branch-context-mapper/SKILL.md) — Branch type analysis
-- ✅ [Changelog Validator](sub-skills/changelog-validator/SKILL.md) — Format and governance validation
-
----
-
-## 🎯 Quick Start
+Clone directly into your personal Claude Code skills directory:
 
 ```bash
-# Install dependencies for both sub-skills
-cd sub-skills/branch-context-mapper && npm install
-cd ../changelog-validator && npm install
-
-# Run tests
-npm test
-
-# Install git hooks
-lefthook install
+git clone https://github.com/lightspeedwp/ls-changelog.git ~/.claude/skills/ls-changelog
 ```
 
-## 📦 Phase 1 Deliverables
+If this checkout already exists there, use it in place. In Claude Code:
 
-### Sub-Skills
-
-1. **branch-context-mapper** ([docs](sub-skills/branch-context-mapper/))
-   - Maps branch types to changelog categories
-   - Calculates semantic version bumps
-   - Detects breaking changes
-   - 32 tests (90%+ coverage)
-
-2. **changelog-validator** ([docs](sub-skills/changelog-validator/))
-   - Validates Keep a Changelog 1.1.0 format
-   - Enforces 6 governance rules
-   - Calculates quality scores (0-100)
-   - 113+ tests (90%+ coverage)
-
-### Integrated Git Hooks (Lefthook)
-
-- ✅ Pre-commit: Branch naming validation
-- ✅ Pre-commit: Changelog format check
-- ✅ Pre-commit: Jest tests (90%+ coverage)
-- ✅ Pre-commit: BATS tests (100% pass)
-- ✅ Commit-msg: Branch-based commit format validation
-- ✅ Pre-push: Final validation before push
-
-## 📂 Directory Structure
-
+```text
+/ls-changelog Add changelog entries for this project's changes
+/ls-changelog Review CHANGELOG.md for release readiness
+/ls-changelog Map feature/gallery-controls to a changelog category
 ```
-changelog/
+
+The parent skill reads the relevant sub-skill instructions when needed. The nested sub-skills are supporting files in this installation; they do not require separate installations or symlinks. This uses Claude Code's [personal skill entrypoint and linked supporting files](https://code.claude.com/docs/en/skills) (checked 1 November 2026).
+
+## Structure
+
+```text
+ls-changelog/
+├── SKILL.md                         # Parent skill and workflow routing
 ├── sub-skills/
-│   ├── branch-context-mapper/        # Branch analysis sub-skill
-│   │   ├── SKILL.md
-│   │   ├── scripts/                  # Implementation
-│   │   ├── __tests__/                # Jest tests
-│   │   ├── tests/                    # BATS tests
-│   │   ├── prompts/                  # Task prompts
-│   │   └── references/               # Strategy docs
-│   └── changelog-validator/          # Validation sub-skill
-│       ├── SKILL.md
-│       ├── scripts/                  # Implementation
-│       ├── __tests__/                # Jest tests
-│       ├── tests/                    # BATS tests
-│       ├── prompts/                  # Task prompts
-│       └── references/               # Governance docs
-├── docs/                             # Architecture & workflow docs
-├── prompts/                          # Shared prompt library
-├── references/                       # Standards & rules
-├── scripts/                          # Shared utilities
-├── assets/                           # Design tokens, templates
-├── lefthook.yaml                     # Git hooks configuration
-└── README.md                         # This file
+│   ├── branch-context-mapper/
+│   │   ├── SKILL.md                 # Branch analysis instructions
+│   │   ├── scripts/                 # Node.js helper
+│   │   ├── references/              # Branching strategy
+│   │   ├── prompts/                 # Task examples
+│   │   ├── __tests__/               # Jest tests
+│   │   └── tests/                   # BATS tests
+│   └── changelog-validator/
+│       ├── SKILL.md                 # Validation instructions and limitations
+│       ├── scripts/                 # Node.js helper
+│       ├── references/              # Governance principles
+│       ├── prompts/                 # Task examples
+│       ├── __tests__/               # Jest tests
+│       └── tests/                   # BATS tests
+├── docs/                            # Guidelines, onboarding, and roadmap
+├── references/                      # Evaluation scenarios and reference index
+├── scripts/                         # Shared-script documentation
+├── assets/                          # Asset documentation
+├── .specify/                        # Existing Spec Kit configuration
+├── .claude/                         # Existing Claude project configuration
+├── CLAUDE.md                        # Repository maintenance instructions
+├── AGENTS.md                        # Skill catalogue
+└── lefthook.yaml                    # Existing hook configuration
 ```
 
-## 🚀 Usage
+## Helpers and current limits
 
-### Branch Context Mapper
-
-Analyze a branch to determine changelog mapping:
+Runtime use requires Node.js 18+ and no npm dependencies. Run helpers with the target project's changelog path explicitly:
 
 ```bash
-cd sub-skills/branch-context-mapper
-node scripts/branch-context-mapper.cjs feature/oauth-authentication
+node ~/.claude/skills/ls-changelog/sub-skills/branch-context-mapper/scripts/branch-context-mapper.cjs feature/gallery-controls
+node ~/.claude/skills/ls-changelog/sub-skills/changelog-validator/scripts/validate-changelog.cjs /absolute/path/to/project/CHANGELOG.md --json
 ```
 
-Returns:
-```json
-{
-  "branchType": "feature",
-  "category": "Added",
-  "versionBump": "MINOR",
-  "isBreaking": false
-}
-```
+- [Branch Context Mapper](sub-skills/branch-context-mapper/SKILL.md) maps seven simple branch types to categories and version hints. It does not detect breaking changes or fully validate Git branch names.
+- [Changelog Validator](sub-skills/changelog-validator/SKILL.md) checks for a changelog title and version-heading pattern. Its score, governance fields, and release-readiness flag are placeholders; manual review is required.
 
-### Changelog Validator
+The skill instructions distinguish helper results from manual checks. Documentation and roadmap targets do not establish implemented enforcement. Changelog preparation alone does not authorise commits, tags, merges, or publication.
 
-Validate a changelog file:
+## Development checks
+
+Each sub-skill has its own npm package and lockfile. There is no root npm package. Install development dependencies and run checks from each directory:
 
 ```bash
-cd sub-skills/changelog-validator
-node scripts/validate-changelog.cjs ../../CHANGELOG.md --json
+npm --prefix sub-skills/branch-context-mapper ci
+npm --prefix sub-skills/changelog-validator ci
+npm --prefix sub-skills/branch-context-mapper test
+npm --prefix sub-skills/changelog-validator test
 ```
 
-Returns:
-```json
-{
-  "score": 91,
-  "governance": {...},
-  "readyForRelease": true
-}
-```
+`npm test` runs ESLint, Prettier, Jest with a 90% coverage threshold, and BATS in sequence. Install BATS separately. A configured threshold is a requirement, not a claim that current tests achieve it. A failed earlier stage prevents later stages from running.
 
-## 🧪 Testing
+`lefthook.yaml` contains existing hook configuration; hooks are not installed by using the skill. Review that configuration before enabling it in a development checkout.
 
-### Run All Tests
+## Further reading
 
-```bash
-# Branch Context Mapper
-cd sub-skills/branch-context-mapper
-npm test
+- [Changelog Guidelines](docs/CHANGELOG_GUIDELINES.md): entry formatting and release conventions.
+- [Team Onboarding](docs/TEAM_ONBOARDING.md): existing team workflow documentation.
+- [Organisation Standards](docs/ORG_STANDARDS.md): organisation policy context.
+- [Phase 2 Roadmap](docs/PHASE_2_ROADMAP.md): planned capabilities.
+- [GitHub Issues](https://github.com/lightspeedwp/ls-changelog/issues): repository issues.
 
-# Changelog Validator
-cd sub-skills/changelog-validator
-npm test
-```
-
-### Coverage Requirements
-
-- **Jest:** 90%+ (lines, functions, branches, statements)
-- **BATS:** 100% pass rate
-- **Total:** 145+ test cases across both sub-skills
-
-## 🏛️ Governance & Org-Wide Standards
-
-### Phase 1: Core Governance (6 Rules)
-
-The changelog-validator enforces:
-1. **Immutability** - Released versions cannot change
-2. **Atomicity** - Each entry references single PR/issue
-3. **Consistency** - All entries follow format rules
-4. **Completeness** - [Unreleased] empty in releases
-5. **Clarity** - Entries meet quality thresholds (0-100 scoring)
-6. **Traceability** - Every entry links to code
-
-### Alignment with LightSpeed WP Org-Wide Standards
-
-This project enforces the organization's canonical standards:
-- **24 branch types** with automated label routing (see [Org Branching Strategy](https://github.com/lightspeedwp/.github/blob/develop/docs/BRANCHING_STRATEGY.md))
-- **20 changelog validation rules** (R001-R020) with error/warning severity levels
-- **6 changelog categories**: feature, fix, improvement, breaking-change, security, performance
-- **Forbidden branch prefixes**: claude, copilot, openai
-- **PR template routing** based on branch type
-- **Branch protection** rules for main branch (squash-merge only, require reviews, etc.)
-
-**Note:** Phase 1 implements 6 core rules. Phase 2 will expand to all 20 org-wide rules and 24 branch types.
-
-See [Org-Wide Standards Analysis](docs/ORG_STANDARDS.md) for complete details.
-
-## 🔗 Git Hooks (Lefthook)
-
-Configuration: `lefthook.yaml`
-
-Hooks validate:
-- Branch naming conventions
-- Changelog format compliance
-- Test coverage and pass rates
-- Commit message format
-- Pre-push validation
-
-Install hooks:
-```bash
-lefthook install
-```
-
-Verify:
-```bash
-lefthook run pre-commit --all-files
-```
-
-## 📚 Key Documentation
-
-### For Developers
-- [Branch Context Mapper](sub-skills/branch-context-mapper/SKILL.md) — Branch type analysis and mapping
-- [Changelog Validator](sub-skills/changelog-validator/SKILL.md) — Format and quality validation
-- [Team Onboarding Guide](docs/TEAM_ONBOARDING.md) — Setup and workflows
-
-### For Project Planning
-- [Phase 2 Roadmap](docs/PHASE_2_ROADMAP.md) — 8-12 week implementation plan with tasks and timelines
-- [Org-Wide Standards](docs/ORG_STANDARDS.md) — Alignment with LightSpeed WP canonical rules
-
-### For Maintainers
-- [CLAUDE.md](CLAUDE.md) — Project instructions and best practices
-- [AGENTS.md](AGENTS.md) — Agent definitions
-- Spec-Kit Constitution — Run `/speckit-constitution` in Claude Code
-
-## ✅ Quality Standards
-
-All code meets:
-- ✅ 90%+ Jest coverage (lines, functions, branches, statements)
-- ✅ 100% BATS pass rate
-- ✅ WordPress block theme/plugin specific examples
-- ✅ Clear error messages with remediation
-- ✅ Production-ready code
-- ✅ Security reviewed
-
-## 🔄 Workflow
-
-```
-1. Create branch (mapper validates naming)
-   ↓
-2. Add changelog entry (validator checks quality)
-   ↓
-3. PR review (validator scores entry)
-   ↓
-4. Release (validator confirms readiness)
-   ↓
-5. Deploy with confidence ✓
-```
-
-## 🤝 Contributing
-
-### Development Workflow
-
-1. **Create branch** following LightSpeed WP conventions: `feature/`, `fix/`, `security/`, `docs/`, etc.
-2. **Make changes** with test-first development (write failing test → implement → verify 90%+ coverage)
-3. **Validate locally** with `npm test` (Jest + BATS)
-4. **Commit** with meaningful messages (lefthook validates format automatically)
-5. **Open PR** with branch type routing to correct template
-6. **Update changelog** entry in [Unreleased] section
-
-For detailed guidance, see [TEAM_ONBOARDING.md](docs/TEAM_ONBOARDING.md#contributing).
-
-### Test Requirements
-
-- **Jest:** 90%+ coverage (lines, functions, branches, statements)
-- **BATS:** 100% pass rate
-- **Total:** 145+ test cases across both sub-skills
-
-## 📞 Support & Issues
-
-- **Getting started:** [Team Onboarding](docs/TEAM_ONBOARDING.md)
-- **Questions about sub-skills:** Check [SKILL.md](sub-skills/branch-context-mapper/SKILL.md) files
-- **Report issues:** [GitHub Issues](https://github.com/lightspeedwp/changelog/issues)
-- **Project questions:** See [CLAUDE.md](CLAUDE.md)
-
-## ⚙️ Spec-Kit Integration
-
-This project uses GitHub's **Spec Kit** for specification-driven development:
-
-```bash
-# Available in Claude Code:
-/speckit-constitution      # Establish project principles
-/speckit-specify          # Create baseline specification
-/speckit-plan             # Create implementation plan
-/speckit-tasks            # Generate actionable tasks
-/speckit-implement        # Execute implementation
-/speckit-converge         # Assess codebase & append remaining work
-
-# Optional enhancements:
-/speckit-clarify          # De-risk ambiguous areas
-/speckit-analyze          # Cross-artifact consistency
-/speckit-checklist        # Generate quality checklists
-```
-
-**Project specs:** `.specify/specs/001-changelog-agent-quality.md`
-
----
-
-## 📄 License
-
-MIT
-
----
-
-**Phase 1 Status:** ✅ Production Ready (26 files, 1,327+ insertions)  
-**Spec-Kit Status:** ✅ Installed (v1.2.5 with Claude integration)  
-**Last Updated:** 2026-10-31  
-**Repository:** https://github.com/lightspeedwp/changelog  
-**Org Standards:** ✅ Aligned (24 branch types, 20 changelog rules)
+Use the root and sub-skill instructions for current paths and supported helper options. Older workflow documents may describe planned capabilities or previous installation paths.

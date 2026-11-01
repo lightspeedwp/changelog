@@ -1,82 +1,13 @@
 # Agents Reference
 
-This document catalogs the agents available for this project.
+This repository provides one parent Claude Code skill with two bundled sub-skills.
 
-## Agents by Purpose
+| Component               | Entrypoint                                             | Purpose                                                                |
+| ----------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------- |
+| `ls-changelog`          | [SKILL.md](SKILL.md)                                   | Route changelog creation, editing, review, and release preparation     |
+| `branch-context-mapper` | [Sub-skill](sub-skills/branch-context-mapper/SKILL.md) | Map branch context to changelog categories and version recommendations |
+| `changelog-validator`   | [Sub-skill](sub-skills/changelog-validator/SKILL.md)   | Run basic checks and guide manual governance review                    |
 
-### changelog-generator (Skill)
+Install the repository at `~/.claude/skills/ls-changelog/` and invoke `/ls-changelog`. The parent reads the relevant nested instructions; no separate sub-skill commands or globally installed branch-validation agent are required.
 
-**Location:** `~/.claude/skills/changelog/SKILL.md`  
-**Type:** Skill  
-**Status:** Active
-
-**Purpose:** Create, validate, and maintain CHANGELOG.md files following Keep a Changelog 1.1.0 standard and LightSpeedWP organizational format.
-
-**Trigger words:** 
-- "changelog", "release notes", "version management"
-- "breaking changes", "semantic versioning"
-- "CHANGELOG.md", "Keep a Changelog"
-
-**Key capabilities:**
-- Creating new CHANGELOG.md files
-- Adding entries (Added, Changed, Fixed, Removed, Security)
-- Managing versions and releases
-- Validating changelog structure and format
-- Converting [Unreleased] to versioned releases
-- Generating release notes from commits/PRs
-- Enforcing entry formatting standards
-
-**Reference:** [Changelog Skill](~/.claude/skills/changelog/SKILL.md)
-
----
-
-### branch-validation (Agent)
-
-**Location:** `~/.claude/agents/branch-validation.agent.md`  
-**Type:** Agent  
-**Status:** Active
-
-**Purpose:** Validates branch names against LightSpeed WP's naming conventions and provides guidance on proper naming, type selection, and CI integration.
-
-**Trigger words:**
-- "branch name", "branch validation"
-- "naming convention", "branch strategy"
-- "git branch", "branch format"
-
-**Key capabilities:**
-- Validating branch name format and conventions
-- Suggesting corrections for invalid names
-- Identifying appropriate branch types
-- Checking CI/CD integration requirements
-- Providing migration guidance for legacy names
-
-**Reference:** [Branch Validation Agent](./.claude/agents/branch-validation.agent.md)
-
----
-
-## Agent Interaction
-
-Agents can call each other:
-
-- **branch-validation** → **changelog-generator**: After validating a branch name, generate appropriate changelog entries
-- **changelog-generator** → **branch-validation**: Reference branch naming when discussing PR/issue references in entries
-
----
-
-## Adding New Agents
-
-To add a new agent to this project:
-
-1. Create agent file in `~/.claude/agents/`
-2. Update this AGENTS.md with agent details
-3. Add agent documentation to docs/
-4. Update CLAUDE.md if agent affects user workflow
-
----
-
-## References
-
-- [CLAUDE.md](./CLAUDE.md) — Project-specific instructions
-- [docs/](./docs/) — Agent documentation
-- [~/.claude/agents/](~/.claude/agents/) — Agent definitions
-- [~/.claude/skills/](~/.claude/skills/) — Skill definitions
+When maintaining these skills, preserve the root entrypoint and relative resource links. Keep documented helper capabilities aligned with executable behaviour. See [CLAUDE.md](CLAUDE.md) for repository development guidance.
